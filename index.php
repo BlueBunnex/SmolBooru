@@ -101,7 +101,7 @@
 			if (imagesy($file_content) > 800)
 				$file_content = imagescale($file_content, (int) (imagesx($file_content) * 800 / imagesy($file_content)), 800);
 
-			if (!imagejpeg($file_content, "img/" . $image_id . ".jpg")) {
+			if (!imagejpeg($file_content, "img/" . $image_id . ".jpg", 100)) {
 
 				return false;
 			}
@@ -130,13 +130,21 @@
 
 	<h1>localbooru</h1>
 
-	<fieldset style="width: 50em; margin: auto;">
+	<fieldset style="width: 30em; margin: auto; text-align: left; border-color: #545;">
 		<legend>Add to booru</legend>
 		<form method="post">
-			<input type="text" name="file" placeholder="File URL..." style="width: 100%;">
+			<input type="text" name="file" placeholder="File URL... (I'll replace this with file upload later but it's hard sob)" style="width: 100%;">
+
 			<br><br>
-			radio buttons for which board to put it under
-			<br><br>
+
+			<!-- <strong>Board</strong><br>
+			<input type="radio" id="fat" name="board" value="fat" selected>
+			<label for="fat">Fat</label><br>
+			<input type="radio" id="hourglass" name="board" value="hourglass">
+			<label for="hourglass">Hourglass</label><br>
+
+			<br> -->
+
 			<input type="submit" value="Post">
 			<span style="color: <?php echo $response_color; ?>;"><?php echo $response; ?></span>
 		</form>
