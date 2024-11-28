@@ -3,8 +3,11 @@
 <head>
 	<title>localbooru</title>
 	<style>
-		body { font-family: sans-serif; }
-		img { max-width: 100%; max-height: 90vh; border: 1px solid lightgrey; }
+		body { font-family: sans-serif; color: #ddd; background: #212; }
+		a { color: #ea2; }
+		h1 { color: #ea2; text-align: center; font-size: 6em; }
+
+		img { max-width: 100%; max-height: 90vh; border: 2px solid transparent; }
 	</style>
 	<?php
 
@@ -21,7 +24,7 @@
 
 	<h1>localbooru</h1>
 
-	<h2><?php echo $image_id; ?></h2>
+	<h2>[<a href="/">back</a>] <?php echo $image_id; ?></h2>
 
 	<img src="<?php echo "/img/" . $image_id . ".jpg"; ?>">
 
