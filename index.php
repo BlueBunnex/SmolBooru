@@ -21,6 +21,19 @@
 		$url_parts = explode("/", $_SERVER["REQUEST_URI"]);
 
 		$curr_board = $url_parts[1];
+
+		if ($url_parts[1] == "") {
+
+			$page_type = "home";
+
+		} else if (count($url_parts) == 2 || ($url_parts[2] == "")) {
+
+			$page_type = "board";
+
+		} else {
+
+			$page_type = "image";
+		}
 	?>
 </head>
 <body>
@@ -37,13 +50,27 @@
 			foreach (array_keys($db) as $board) {
 
 				if ($board == $curr_board) {
+
 					echo "[ <strong>$board</strong> ] ";
+
 				} else {
-					echo "[ <a href='/$board'>$board</a> ] ";
+
+					echo "[ <a href='board/$board'>$board</a> ] ";
 				}
 			}
 		?>
 	</nav>
+
+	<?php
+	
+		if ($page_type == "image") {
+
+			echo "<h2>[<a href='/$url_parts[1]'>back</a>] $url_parts[2]</h2>";
+
+			echo "<img style='height: auto; max-width: 100%; max-height: 90vh;' src='/image_db/" . $url_parts[2] . ".jpg'>";
+		}
+
+	?>
 
 </body>
 </html>
