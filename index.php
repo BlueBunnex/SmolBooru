@@ -3,8 +3,11 @@
 <head>
 	<title>localbooru</title>
 	<style>
-		body { font-family: sans-serif; }
-		img { height: 200px; border: 1px solid lightgrey; }
+		body { font-family: sans-serif; color: #ddd; background: #212; }
+		a { color: #ea2; }
+		h1 { color: #ea2; text-align: center; font-size: 6em; }
+
+		img { height: 200px; border: 2px solid transparent; }
 	</style>
 	<?php
 
@@ -125,6 +128,8 @@
 </head>
 <body>
 
+	<h1>localbooru</h1>
+
 	<fieldset style="width: 50em; margin: auto;">
 		<legend>Add to booru</legend>
 		<form method="post">
@@ -137,7 +142,7 @@
 		</form>
 	</fieldset>
 
-	<h1>localbooru</h1>
+	<br><br><br>
 
 	<div>
 		<?php
