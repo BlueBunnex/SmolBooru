@@ -11,6 +11,8 @@
 	</style>
 	<?php
 
+		$_BOARDS = [ "fat", "hourglass" ];
+
 		// hide warnings
 		ini_set('display_errors','Off');
 		ini_set('error_reporting', E_ALL );
@@ -24,8 +26,6 @@
 
 	<div>
 		<?php
-
-		$_BOARDS = [ "fat", "hourglass" ];
 			
 			$dbString = file_get_contents('db.json');
 			$db = json_decode($dbString, true);
