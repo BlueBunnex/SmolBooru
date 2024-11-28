@@ -36,6 +36,19 @@
 
 			$page_type = "image";
 		}
+
+		// make sure the selected board exists
+		if ($page_type != "home") {
+
+			$dbString = file_get_contents('db.json');
+			$db = json_decode($dbString, true);
+
+			if (!in_array($url_parts[1], array_keys($db))) {
+
+				echo "Invalid board! Are you trying to be sneaky?";
+				return;
+			}
+		}
 	?>
 
 	<?php // this PHP block has ALL of the post code. it's kinda messy
@@ -43,17 +56,6 @@
 	// if /image_db doesn't exist, uh, it should lol
 
 	if ($page_type == "board") {
-
-		$dbString = file_get_contents('db.json');
-		$db = json_decode($dbString, true);
-
-		$board = explode("/", $_SERVER["REQUEST_URI"])[1];
-
-		if (!in_array($board, array_keys($db))) {
-
-			echo "Invalid board! Are you trying to be sneaky?";
-			return;
-		}
 
 		$response = "";
 		$response_color = "black";
