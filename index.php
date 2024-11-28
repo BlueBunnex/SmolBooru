@@ -44,7 +44,7 @@
 
 			global $_BOARDS;
 
-			// if /img doesn't exist, uh, it should lol
+			// if /image_db doesn't exist, uh, it should lol
 
 			$board = $_POST["board"];
 
@@ -65,7 +65,7 @@
 				if ($file_content) {
 
 					if (
-						file_put_contents("img/" . $image_id . "." . $file_extension, $file_content)
+						file_put_contents("image_db/" . $image_id . "." . $file_extension, $file_content)
 						&& normalizeLocalImage($image_id, $file_extension)
 						&& addLocalImageToDB($image_id, $board)
 					) {
@@ -116,15 +116,15 @@
 
 				case "jpg":
 				case "jpeg":
-					$file_content = imagecreatefromjpeg("img/" . $image_id . "." . $image_extension);
+					$file_content = imagecreatefromjpeg("image_db/" . $image_id . "." . $image_extension);
 					break;
 
 				case "png":
-					$file_content = imagecreatefrompng("img/" . $image_id . "." . $image_extension);
+					$file_content = imagecreatefrompng("image_db/" . $image_id . "." . $image_extension);
 					break;
 
 				case "webp":
-					$file_content = imagecreatefromwebp("img/" . $image_id . "." . $image_extension);
+					$file_content = imagecreatefromwebp("image_db/" . $image_id . "." . $image_extension);
 					break;
 
 				default:
@@ -134,13 +134,13 @@
 			if (imagesy($file_content) > 800)
 				$file_content = imagescale($file_content, (int) (imagesx($file_content) * 800 / imagesy($file_content)), 800);
 
-			if (!imagejpeg($file_content, "img/" . $image_id . ".jpg", 100)) {
+			if (!imagejpeg($file_content, "image_db/" . $image_id . ".jpg", 100)) {
 
 				return false;
 			}
 
 			if ($image_extension != "jpg")
-				unlink("img/" . $image_id . "." . $image_extension);
+				unlink("image_db/" . $image_id . "." . $image_extension);
 
 			return true;
 		}
@@ -208,7 +208,7 @@
 
 					foreach (array_keys($db[$board]) as $id) {
 
-						echo "<a href='view/$id'><img src='img/$id.jpg'></a>";
+						echo "<a href='img/$id'><img src='image_db/$id.jpg'></a>";
 					}
 				}
 			}
