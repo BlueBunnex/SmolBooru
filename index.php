@@ -4,7 +4,7 @@
 	<title>bunsbooru</title>
 	<style>
 		body { font-family: sans-serif; color: #ddd; background: #212; text-align: center; }
-		a { color: #ea2; text-decoration: none; }
+		a { color: #ea2; text-decoration-style: dotted; }
 		h1 { color: #ea2; font-size: 6em; margin-bottom: 0; }
 
 		img { border: 2px solid transparent; height: 200px; }
@@ -55,15 +55,30 @@
 
 				} else {
 
-					echo "[ <a href='board/$board'>$board</a> ] ";
+					echo "[ <a href='/board/$board'>$board</a> ] ";
 				}
 			}
 		?>
 	</nav>
 
 	<?php
+
+		if ($page_type == "home") {
+
+			// just show a random image
+			echo "<br><br><br><br><br><br>";
+			echo "<img style='height: 300px;' src='image_db/" . array_keys($db["hourglass"])[0] . ".jpg'>";
+			echo "<br>A random image!";
+
+		}
+
+		else if ($page_type == "board") {
+
+			echo "board";
+
+		}
 	
-		if ($page_type == "image") {
+		else if ($page_type == "image") {
 
 			echo "<h2>[<a href='/$url_parts[1]'>back</a>] $url_parts[2]</h2>";
 
