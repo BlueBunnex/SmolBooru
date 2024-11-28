@@ -11,6 +11,8 @@
 	</style>
 	<?php
 
+		$_BOARDS = [ "fat", "hourglass" ];
+
 		// hide warnings
 		ini_set('display_errors','Off');
 		ini_set('error_reporting', E_ALL );
@@ -38,33 +40,26 @@
 		// php -S localhost:8000
 		// https://www.w3schools.com/php/php_forms.asp
 
-		function getIdWithoutCollision() {
-
-			$image_id = rand(0, 10000000);
-
-			$dbString = file_get_contents('db.json');
-			$db = json_decode($dbString, true);
-
-			while ($db[$image_id] != null) { // should probably limit how many times it can loop, but uh, w/e
-
-				$image_id = rand(0, 10000000);
-			}
-
-			return $image_id;
-		}
-
 		function postImage() {
 
+			global $_BOARDS;
+
 			// if /img doesn't exist, uh, it should lol
+
+			$board = $_POST["board"];
+
+			if (!in_array($board, $_BOARDS)) {
+
+				return "Invalid board! Are you trying to be sneaky?";
+			}
 
 			$file_url = htmlspecialchars($_POST["file"]);
 
 			if ($file_url != "") {
 
-				$file_content = file_get_contents($file_url);
+				$file_content   = file_get_contents($file_url);
 				$file_extension = pathinfo(explode("?", $file_url)[0])["extension"];
 
-				// generate an image ID while checking for collisions
 				$image_id = getIdWithoutCollision();
 
 				if ($file_content) {
@@ -72,7 +67,7 @@
 					if (
 						file_put_contents("img/" . $image_id . "." . $file_extension, $file_content)
 						&& normalizeLocalImage($image_id, $file_extension)
-						&& addLocalImageToDB($image_id)
+						&& addLocalImageToDB($image_id, $board)
 					) {
 
 						return null;
@@ -91,6 +86,22 @@
 
 				return "URL cannot be blank!";
 			}
+		}
+
+		// generate an image ID while checking for collisions
+		function getIdWithoutCollision() {
+
+			$image_id = rand(0, 10000000);
+
+			$dbString = file_get_contents('db.json');
+			$db = json_decode($dbString, true);
+
+			while ($db[$image_id] != null) { // should probably limit how many times it can loop, but uh, w/e
+
+				$image_id = rand(0, 10000000);
+			}
+
+			return $image_id;
 		}
 
 		// normalizes to jpeg with height=800px
@@ -129,12 +140,17 @@
 			return true;
 		}
 
-		function addLocalImageToDB($image_id) {
+		function addLocalImageToDB($image_id, $board) {
 
 			$dbString = file_get_contents('db.json');
 			$db = json_decode($dbString, true);
 
-			$db[$image_id] = array();
+			if ($db[$board] == null) {
+
+				$db[$board] = array();
+			}
+
+			$db[$board][$image_id] = array();
 
 			$dbString = json_encode($db);
 			file_put_contents('db.json', $dbString);
@@ -154,13 +170,16 @@
 
 			<br><br>
 
-			<!-- <strong>Board</strong><br>
-			<input type="radio" id="fat" name="board" value="fat" selected>
-			<label for="fat">Fat</label><br>
-			<input type="radio" id="hourglass" name="board" value="hourglass">
-			<label for="hourglass">Hourglass</label><br>
+			<strong>Board</strong><br>
+			<?php
 
-			<br> -->
+				foreach ($_BOARDS as $board) {
+					
+					echo "<input type='radio' id='$board' name='board' value='$board' checked><label for='$board'>$board</label><br>";
+				}
+			?>
+
+			<br>
 
 			<input type="submit" value="Post">
 			<span style="color: <?php echo $response_color; ?>;"><?php echo $response; ?></span>
@@ -176,8 +195,17 @@
 			$dbString = file_get_contents('db.json');
 			$db = json_decode($dbString, true);
 
-			foreach (array_keys($db) as $id) {
-				echo "<a href='view/$id'><img src='img/$id.jpg'></a>";
+			foreach ($_BOARDS as $board) {
+
+				echo "<h2>$board</h2>";
+
+				if ($db[$board] != null) {
+
+					foreach (array_keys($db[$board]) as $id) {
+
+						echo "<a href='view/$id'><img src='img/$id.jpg'></a>";
+					}
+				}
 			}
 		?>
 	</div>
