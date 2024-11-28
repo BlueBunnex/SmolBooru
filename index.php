@@ -124,7 +124,7 @@
 	?>
 </head>
 <body>
-	
+
 	<fieldset style="width: 50em; margin: auto;">
 		<legend>Add to booru</legend>
 		<form method="post">
@@ -147,7 +147,7 @@
 			$db = json_decode($dbString, true);
 
 			foreach (array_keys($db) as $id) {
-				echo "<img src='img/" . $id . ".jpg'>";
+				echo "<a href='view/$id'><img src='img/$id.jpg'></a>";
 			}
 		?>
 	</div>
