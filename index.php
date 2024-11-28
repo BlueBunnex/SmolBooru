@@ -8,10 +8,73 @@
 	</style>
 	<?php
 
+		// hide warnings
+		ini_set('display_errors','Off');
+		ini_set('error_reporting', E_ALL );
+		define('WP_DEBUG', false);
+		define('WP_DEBUG_DISPLAY', false);
+
+		$response = "";
+		$response_color = "black";
+
+		if ($_SERVER["REQUEST_METHOD"] == "POST") {
+
+			$response = postImage();
+
+			if ($response == null) {
+
+				$response = "Successfully uploaded!";
+				$response_color = "green";
+
+			} else {
+
+				$response_color = "red";
+			}
+		}
+
+		// php -S localhost:8000
+		// https://www.w3schools.com/php/php_forms.asp
+
+		function postImage() {
+
+			$file_url = htmlspecialchars($_POST["file"]);
+
+			if ($file_url != "") {
+
+				$file_content = file_get_contents($file_url);
+				$file_extension = pathinfo(explode("?", $file_url)[0])["extension"];
+
+				// generate an image ID while checking for collisions
+				$image_id = rand(0, 10000000);
+
+				if ($file_content) {
+
+					if (
+						file_put_contents("img/" . $image_id . "." . $file_extension, $file_content)
+						&& normalizeLocalImage($image_id, $file_extension)
+						&& addLocalImageToDB($image_id)
+					) {
+
+						return null;
+
+					} else {
+
+						return "Could not download!";
+					}
+
+				} else {
+
+					return "Bad URL!";
+				}
+
+			} else {
+
+				return "URL cannot be blank!";
+			}
+		}
+
 		// normalizes to jpeg with height=800px
 		function normalizeLocalImage($image_id, $image_extension) {
-
-			echo $image_extension;
 
 			switch ($image_extension) {
 
@@ -58,61 +121,10 @@
 
 			return true;
 		}
-
-		// php -S localhost:8000
-		// https://www.w3schools.com/php/php_forms.asp
-
-		// hide warnings
-		// ini_set('display_errors','Off');
-		// ini_set('error_reporting', E_ALL );
-		// define('WP_DEBUG', false);
-		// define('WP_DEBUG_DISPLAY', false);
-
-		$response = "";
-		$response_color = "red";
-
-		if ($_SERVER["REQUEST_METHOD"] == "POST") {
-
-			$file_url = htmlspecialchars($_POST["file"]);
-
-			if ($file_url != "") {
-
-				$file_content = file_get_contents($file_url);
-				$file_extension = pathinfo(explode("?", $file_url)[0])["extension"];
-
-				// generate an image ID while checking for collisions
-				$image_id = rand(0, 10000000);
-
-				if ($file_content) {
-
-					if (
-						file_put_contents("img/" . $image_id . "." . $file_extension, $file_content)
-						&& normalizeLocalImage($image_id, $file_extension)
-						&& addLocalImageToDB($image_id)
-					) {
-
-						$response = "Successfully uploaded!";
-						$response_color = "green";
-
-					} else {
-
-						$response = "Could not download!";
-					}
-
-				} else {
-
-					$response = "Bad URL!";
-				}
-
-			} else {
-
-				$response = "URL cannot be blank!";
-			}
-		}
 	?>
 </head>
 <body>
-
+	
 	<fieldset style="width: 50em; margin: auto;">
 		<legend>Add to booru</legend>
 		<form method="post">
