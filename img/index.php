@@ -26,7 +26,7 @@
 
 	<h2>[<a href="/">back</a>] <?php echo $image_id; ?></h2>
 
-	<img src="<?php echo "/img/" . $image_id . ".jpg"; ?>">
+	<img src="<?php echo "/image_db/" . $image_id . ".jpg"; ?>">
 
 </body>
 </html>
