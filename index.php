@@ -4,8 +4,8 @@
 	<title>bunsbooru</title>
 	<style>
 		body { font-family: sans-serif; color: #ddd; background: #212; text-align: center; }
-		a { color: #ea2; text-decoration-style: dotted; }
-		h1 { color: #ea2; font-size: 3em; margin: 1rem; }
+		a { color: #ea2; }
+		h1 { font-size: 3em; margin: 1rem; }
 
 		img { border: 2px solid transparent; height: 200px; }
 	</style>
@@ -38,7 +38,7 @@
 </head>
 <body>
 
-	<h1>bunsbooru</h1>
+	<h1><a href="/">bunsbooru</a></h1>
 
 	<nav>
 		<?php
@@ -96,13 +96,13 @@
 			$dbString = file_get_contents('db.json');
 			$db = json_decode($dbString, true);
 
-			echo "<h2><span style='font-weight: 400;'>Images in</span> $board</h2>";
+			echo "<h2><span style='font-weight: 400;'>Images in</span> $url_parts[1]</h2>";
 
-			if ($db[$board] != null) {
+			if ($db[$url_parts[1]] != null) {
 
-				foreach (array_keys($db[$board]) as $id) {
+				foreach (array_keys($db[$url_parts[1]]) as $id) {
 
-					echo "<a href='/$board/$id'><img src='/image_db/$id.jpg'></a>";
+					echo "<a href='/$url_parts[1]/$id'><img src='/image_db/$id.jpg'></a>";
 				}
 			}
 
