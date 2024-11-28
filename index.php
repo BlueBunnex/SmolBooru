@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>localbooru</title>
+	<title>bunsbooru</title>
 	<style>
 		body { font-family: sans-serif; color: #ddd; background: #212; text-align: center; }
 		a { color: #ea2; text-decoration: none; }
@@ -20,10 +20,7 @@
 		*/
 		$url_parts = explode("/", $_SERVER["REQUEST_URI"]);
 
-		foreach ($url_parts as $part) {
-
-			echo $part . "<br>";
-		}
+		$curr_board = $url_parts[1];
 	?>
 </head>
 <body>
@@ -37,9 +34,13 @@
 			$db = json_decode($dbString, true);
 
 			// insert button to each board
-			foreach ($db["boards"] as $board) {
+			foreach (array_keys($db) as $board) {
 
-				echo "[ <a href='board/$board'>$board</a> ] ";
+				if ($board == $curr_board) {
+					echo "[ <strong>$board</strong> ] ";
+				} else {
+					echo "[ <a href='/$board'>$board</a> ] ";
+				}
 			}
 		?>
 	</nav>
