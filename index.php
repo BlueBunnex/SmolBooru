@@ -3,7 +3,7 @@
 <head>
 	<title>bunsbooru</title>
 	<style>
-		body { font-family: sans-serif; color: #ddd; background: #212; text-align: center; }
+		body { font-family: sans-serif; color: #ddd; background: #212; margin: 0; }
 		a { color: #ea2; }
 		h1 { font-size: 3em; margin: 1rem; }
 
@@ -196,7 +196,7 @@
 
 	<h1><a href="/">bunsbooru</a></h1>
 
-	<nav>
+	<nav style="padding: 1em; background: black;">
 		<?php
 			
 			$dbString = file_get_contents('db.json');
@@ -205,7 +205,7 @@
 			// insert button to each board
 			foreach (array_keys($db) as $board) {
 
-				if ($board == $curr_board) {
+				if ($page_type == "board" && $board == $curr_board) {
 
 					echo "[ <strong>$board</strong> ] ";
 
@@ -217,60 +217,62 @@
 		?>
 	</nav>
 
-	<br><br><br>
+	<div style="padding: 1em;">
 
-	<?php
+		<?php
 
-		if ($page_type == "home") {
+			if ($page_type == "home") {
 
-			// just show a random image
-			echo "<img style='height: 300px;' src='image_db/" . array_keys($db["hourglass"])[0] . ".jpg'>";
-			echo "<br>A random image!";
+				// just show a random image
+				echo "<img style='height: 300px;' src='image_db/" . array_keys($db["hourglass"])[0] . ".jpg'>";
+				echo "<br>A random image!";
 
-		}
-
-		else if ($page_type == "board") {
-
-			echo <<<EOL
-			<fieldset style="width: 30em; margin: auto; text-align: left; border-color: #545;">
-				<legend>Post image to <strong>$url_parts[1]</strong></legend>
-				<form method="post">
-					<input type="text" name="file" placeholder="File URL... (I'll replace this with file upload later but it's hard sob)" style="width: 100%;">
-
-					<br><br>
-
-					<input type="submit" value="Post">
-					<span style="color: $response_color;">$response</span>
-				</form>
-			</fieldset>
-
-			<br><br><br>
-			EOL;
-
-			// add image to json
-			$dbString = file_get_contents('db.json');
-			$db = json_decode($dbString, true);
-
-			echo "<h2><span style='font-weight: 400;'>Images in</span> $url_parts[1]</h2>";
-
-			if ($db[$url_parts[1]] != null) {
-
-				foreach (array_keys($db[$url_parts[1]]) as $id) {
-
-					echo "<a href='/$url_parts[1]/$id'><img src='/image_db/$id.jpg'></a>";
-				}
 			}
 
-		}
-	
-		else if ($page_type == "image") {
+			else if ($page_type == "board") {
 
-			echo "<h2>[<a href='/$url_parts[1]'>back</a>] $url_parts[2]</h2>";
+				echo <<<EOL
+				<fieldset style="width: 30em; border-color: #545;">
+					<legend>Post image to <strong>$url_parts[1]</strong></legend>
+					<form method="post">
+						<input type="text" name="file" placeholder="File URL... (I'll replace this with file upload later but it's hard sob)" style="width: 100%;">
 
-			echo "<img style='height: auto; max-width: 100%; max-height: 90vh;' src='/image_db/" . $url_parts[2] . ".jpg'>";
-		}
+						<br><br>
 
-	?>
+						<input type="submit" value="Post">
+						<span style="color: $response_color;">$response</span>
+					</form>
+				</fieldset>
+
+				<br><br><br>
+				EOL;
+
+				// add image to json
+				$dbString = file_get_contents('db.json');
+				$db = json_decode($dbString, true);
+
+				echo "<h2><span style='font-weight: 400;'>Images in</span> $url_parts[1]</h2>";
+
+				if ($db[$url_parts[1]] != null) {
+
+					foreach (array_keys($db[$url_parts[1]]) as $id) {
+
+						echo "<a href='/$url_parts[1]/$id'><img src='/image_db/$id.jpg'></a>";
+					}
+				}
+
+			}
+		
+			else if ($page_type == "image") {
+
+				echo "<h2>$url_parts[2] ($url_parts[1])</h2>";
+
+				echo "<img style='height: auto; max-width: 100%; max-height: 90vh;' src='/image_db/" . $url_parts[2] . ".jpg'>";
+			}
+
+		?>
+
+	</div>
 
 </body>
 </html>
