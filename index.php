@@ -9,6 +9,22 @@
 
 		img { border: 2px solid transparent; height: 200px; }
 	</style>
+
+	<?php
+		/*
+
+		/
+		/boobs
+		/boobs/3423098
+
+		*/
+		$url_parts = explode("/", $_SERVER["REQUEST_URI"]);
+
+		foreach ($url_parts as $part) {
+
+			echo $part . "<br>";
+		}
+	?>
 </head>
 <body>
 
