@@ -6,15 +6,10 @@
 		body { font-family: sans-serif; }
 		img { height: 200px; border: 1px solid lightgrey; }
 	</style>
-</head>
-<body>
-	
 	<?php
 
 		// normalizes to jpeg with height=800px
 		function normalizeLocalImage($image_id, $image_extension) {
-
-			$file_content;
 
 			echo $image_extension;
 
@@ -115,8 +110,8 @@
 			}
 		}
 	?>
-
-	
+</head>
+<body>
 
 	<fieldset style="width: 50em; margin: auto;">
 		<legend>Add to booru</legend>
