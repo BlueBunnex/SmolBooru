@@ -38,7 +38,24 @@
 		// php -S localhost:8000
 		// https://www.w3schools.com/php/php_forms.asp
 
+		function getIdWithoutCollision() {
+
+			$image_id = rand(0, 10000000);
+
+			$dbString = file_get_contents('db.json');
+			$db = json_decode($dbString, true);
+
+			while ($db[$image_id] != null) { // should probably limit how many times it can loop, but uh, w/e
+
+				$image_id = rand(0, 10000000);
+			}
+
+			return $image_id;
+		}
+
 		function postImage() {
+
+			// if /img doesn't exist, uh, it should lol
 
 			$file_url = htmlspecialchars($_POST["file"]);
 
@@ -48,7 +65,7 @@
 				$file_extension = pathinfo(explode("?", $file_url)[0])["extension"];
 
 				// generate an image ID while checking for collisions
-				$image_id = rand(0, 10000000);
+				$image_id = getIdWithoutCollision();
 
 				if ($file_content) {
 
