@@ -60,7 +60,7 @@
 				$file_content   = file_get_contents($file_url);
 				$file_extension = pathinfo(explode("?", $file_url)[0])["extension"];
 
-				$image_id = getIdWithoutCollision();
+				$image_id = getIdWithoutCollision($board);
 
 				if ($file_content) {
 
@@ -89,14 +89,19 @@
 		}
 
 		// generate an image ID while checking for collisions
-		function getIdWithoutCollision() {
+		function getIdWithoutCollision($board) {
 
 			$image_id = rand(0, 10000000);
 
 			$dbString = file_get_contents('db.json');
 			$db = json_decode($dbString, true);
 
-			while ($db[$image_id] != null) { // should probably limit how many times it can loop, but uh, w/e
+			if ($db[$board] == null) {
+				
+				return $image_id;
+			}
+
+			while ($db[$board][$image_id] != null) { // should probably limit how many times it can loop, but uh, w/e
 
 				$image_id = rand(0, 10000000);
 			}
