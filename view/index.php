@@ -3,11 +3,11 @@
 <head>
 	<title>localbooru</title>
 	<style>
-		body { font-family: sans-serif; color: #ddd; background: #212; }
+		body { font-family: sans-serif; color: #ddd; background: #212; text-align: center; }
 		a { color: #ea2; }
-		h1 { color: #ea2; text-align: center; font-size: 6em; }
+		h1 { color: #ea2; font-size: 6em; }
 
-		img { max-width: 100%; max-height: 90vh; border: 2px solid transparent; }
+		img { border: 2px solid transparent; max-width: 100%; max-height: 90vh; }
 	</style>
 	<?php
 
