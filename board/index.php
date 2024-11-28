@@ -196,7 +196,7 @@
 
 				foreach (array_keys($db[$board]) as $id) {
 
-					echo "<a href='img/$id'><img src='/image_db/$id.jpg'></a>";
+					echo "<a href='/img/$id'><img src='/image_db/$id.jpg'></a>";
 				}
 			}
 		?>
