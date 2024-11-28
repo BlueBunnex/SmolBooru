@@ -9,16 +9,6 @@
 
 		img { border: 2px solid transparent; height: 200px; }
 	</style>
-	<?php
-
-		$_BOARDS = [ "fat", "hourglass" ];
-
-		// hide warnings
-		ini_set('display_errors','Off');
-		ini_set('error_reporting', E_ALL );
-		define('WP_DEBUG', false);
-		define('WP_DEBUG_DISPLAY', false);
-	?>
 </head>
 <body>
 
@@ -30,12 +20,22 @@
 			$dbString = file_get_contents('db.json');
 			$db = json_decode($dbString, true);
 
-			foreach ($_BOARDS as $board) {
+			// insert button to each board
+			foreach ($db["boards"] as $board) {
 
-				$ids = array_keys($db[$board]);
-				$id = $ids[0];
+				if (array_key_exists($board, $db) && count($db[$board]) > 0) {
 
-				echo "<a href='board/$board' style='display: inline-block; width: 200px; aspect-ratio: 1; background-image: url(\"image_db/$id.jpg\"); background-size: cover; background-position: center; color: black; font-size: 2em; text-shadow: 0 0 4px white;'>$board</a>";
+					// if board entry already exists in json, pog
+					$ids = array_keys($db[$board]);
+					$id = $ids[0];
+
+					echo "<a href='board/$board' style='display: inline-block; width: 200px; aspect-ratio: 1; background-image: url(\"image_db/$id.jpg\"); background-size: cover; background-position: center; color: black; font-size: 2em; text-shadow: 0 0 4px white;'>$board</a>";
+
+				} else {
+
+					// if board entry doesn't exist in json, or it's empty, the button can't have an image background
+					echo "<a href='board/$board' style='display: inline-block; width: 200px; aspect-ratio: 1; background: pink; color: black; font-size: 2em; text-shadow: 0 0 4px white;'>$board</a>";
+				}
 			}
 		?>
 	</div>
